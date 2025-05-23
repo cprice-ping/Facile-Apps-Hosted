@@ -1,0 +1,31 @@
+{
+  "name": "facile-apps",
+  "version": "0.0.1",
+  "description": "A set of apps for use with Ping Facile - ExpressJS used to handle the {{releaseName}} routing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "pug": "^3.0.3",
+    "got": "^11.8.6",
+    "cors": "^2.8.5",
+    "btoa": "^1.2.1",
+    "body-parser": "^1.20.1",
+    "atob": "^2.1.2"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/hello-express"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "glitch",
+    "ping",
+    "pingidentity",
+    "facile"
+  ]
+}

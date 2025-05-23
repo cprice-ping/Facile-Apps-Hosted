@@ -1,0 +1,62 @@
+html
+  head
+    title AuthN API Widget
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")    
+    include includes/headers.pug
+   
+  body
+    // div(class="content" style="padding: 30px")
+    .container
+      .row
+        .col
+          #authnwidget
+          .d-none#userAuthN
+            .container
+              i(src="https://cdn.glitch.com/a766be66-dd8a-4fa9-adb0-382568f98cae%2FPingIdentity-logo.png?v=1619110029434")
+              .card#userInfoCard
+                .card-header#userInfoHeader
+                .card-body#userInfoDetails
+              br
+              .card#idTokenCard
+                .card-header#idTokenHeader ID Token
+                .card-body#idTokenBody
+        .col
+          .card.shadow
+            h5.card-header AuthN Widget - 1st Party
+            .card-body
+              p. 
+                This is a demo of the PingFederate AuthN API Widget using the Redirectless feature.
+              p.
+                This widget is sending an OIDC Implicit request with <code>response_mode=pi.flow</code>. 
+                The regular browser flows are replaced by REST request \ responses that can be processed in the client.
+              p.
+                The widget follows the PF Authentication Policy that the OIDC client is configured to use. 
+              p.
+                Widget Source: <a href="https://github.com/pingidentity/pf-authn-js-widget"> GitHub</a>                  
+            
+include includes/scripts.pug
+
+  script.
+  
+    var _releaseName = '#{releaseName}'
+    function load() {
+      var _pfBaseURL = "https://"+_releaseName+".ping-devops.com"
+      var authnWidget = new PfAuthnWidget(
+        _pfBaseURL,
+        { divId: "authnwidget", logo: "https://cdn.glitch.com/a766be66-dd8a-4fa9-adb0-382568f98cae%2FPingIdentity-logo.png?v=1619110029434", deviceProfileScript: '/widget/pingone-risk-management-profiling.js' }
+      );
+      var config = {
+        client_id: "PingRedirectless",
+        response_type: "id_token",
+        scope: ['openid', 'profile', 'email', 'address', 'phone'],
+        nonce: Math.floor((Math.random()) * 0x100000).toString(16),
+        onAuthorizationSuccess: function(response) {
+          document.getElementById("authnwidget").classList.add("d-none")
+          showUserCard(jwt_decode(response.id_token))
+        }
+      };
+      authnWidget.initRedirectless(config);
+    }
+    window.onload = load;
+

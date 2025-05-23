@@ -1,0 +1,42 @@
+html
+  head
+    title PingFed AuthN API Widget
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")    
+    link(rel="stylesheet" type="text/css", href="https://assets.pingone.com/ux/end-user/0.33.0/end-user.css")
+    link(rel="stylesheet" type="text/css" href="/widget/main-styles.css")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous")
+    link(rel="shortcut icon" href="https://www.pingidentity.com/etc.clientlibs/settings/wcm/designs/pic6/assets/resources/images/favicon-new.png")
+   
+  body
+    .container
+      .row
+        .col
+          #authnwidget
+        .col
+          .card
+            h5.card-header PingFed AuthN Widget Demo
+            .card-body
+              p. 
+                This is a demo of the PingFederate AuthN API Widget.
+              p.
+                The widget is receiving a <code>flowId</code> from a Facile deployed PingFederate instance <code>(#{pfBaseUrl})</code>.
+              p.
+                The widget is invoked by the Authentication API application that is linked
+                to the AuthN Policy used by the application (SAML / OIDC).
+              p.
+                <a href="./redirectless">Redirectless</a> version
+              p.
+                Widget Source: <a href="https://github.com/pingidentity/pf-authn-js-widget"> GitHub</a>
+
+script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/@ping-identity/pf-authn-js-widget@1.5.0/dist/pf.authn-widget.min.js")
+script(type="text/javascript" src="../widget/fingerprint2-2.1.4.min.js")
+script.
+  function load() {
+    var authnWidget = new PfAuthnWidget(
+      '#{pfBaseUrl}',
+      { divId: "authnwidget", logo: 'https://cdn.glitch.com/a766be66-dd8a-4fa9-adb0-382568f98cae%2FPingIdentity-logo.png?v=1619110029434', deviceProfileScript: '../widget/pingone-risk-management-profiling.js' }
+    );
+    authnWidget.init();
+  }
+  window.onload = load;

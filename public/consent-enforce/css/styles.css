@@ -1,0 +1,54 @@
+/* Our default values set as CSS variables */
+:root {
+  --color-bg: white;
+  --color-text-main: #000000;
+  --color-primary: #FFFF00;
+  --wrapper-height: 87vh;
+  --image-max-width: 300px;
+  --image-margin: 3rem;
+  --font-family: "HK Grotesk";
+  --font-family-header: "HK Grotesk";
+}
+
+/* Import fonts */
+@font-face {
+  font-family: HK Grotesk;
+  src: url("https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Regular.otf?v=1603136326027")
+    format("opentype");
+}
+@font-face {
+  font-family: HK Grotesk;
+  font-weight: bold;
+  src: url("https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Bold.otf?v=1603136323437")
+    format("opentype");
+}
+
+body, html {
+  font-family: HK Grotesk;
+  padding: 0;
+  margin: 0; }
+
+div.wrapper {
+  padding: 10px;
+  margin: 10px; }
+
+/*# sourceMappingURL=main-styles.css.map*/
+
+/* Fix for Spinner with Bootstrap */
+.spinner *,
+.spinner *:before,
+.spinner *:after {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px;
+}
+
+#consoleLog {
+  overflow: scroll;
+  overflow-x: auto;
+}

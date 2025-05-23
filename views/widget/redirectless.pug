@@ -1,0 +1,64 @@
+html
+  head
+    title AuthN API Widget
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel="manifest" href="manifest.json")
+    include includes/headers.pug
+   
+  body
+    // div(class="content" style="padding: 30px")
+    .container
+      .row
+        .col
+          #authnwidget
+          .d-none#tokenDisplay
+            .card.shadow
+              h5.card-header ID Token (Payload)
+              .card-body#idToken
+            p
+            .card.shadow
+              h5.card-header Access Token (Payload)
+              .card-body#accessToken
+        .col
+          .card.shadow
+            h5.card-header AuthN Widget - 1st Party
+            .card-body
+              p. 
+                This is a demo of the PingFederate AuthN API Widget using the Redirectless feature.
+              p.
+                This widget is sending an OIDC Implicit request with <code>response_mode=pi.flow</code>. 
+                The regular browser flows are replaced by REST request \ responses that can be processed in the client.
+              p.
+                The widget follows the PF Authentication Policy that the OIDC client is configured to use. 
+              p.
+                Widget Source: <a href="https://github.com/pingidentity/pf-authn-js-widget"> GitHub</a> 
+                  
+            
+  script.
+    function load() {
+      var authnWidget = new PfAuthnWidget(
+        '#{pfBaseUrl}',
+        { divId: "authnwidget", logo: "https://cdn.glitch.com/a766be66-dd8a-4fa9-adb0-382568f98cae%2FPingIdentity-logo.png?v=1619110029434", deviceProfileScript: '/widget/pingone-risk-management-profiling.js' }
+      );
+      var config = {
+        client_id: "PingRedirectless",
+        response_type: "code",
+        scope: ['openid', 'profile', 'email', 'address', 'phone'],
+        nonce: Math.floor((Math.random()) * 0x100000).toString(16),
+        onAuthorizationSuccess: function(response) {
+          let accessToken = response.access_token
+          let idToken = response.id_token
+          
+          let tokenElement = document.getElementById("tokenDisplay");
+          document.getElementById('accessToken').innerHTML = "<code>" + JSON.stringify(jwt_decode(accessToken), null, 2) + "</code>"
+          document.getElementById('idToken').innerHTML = "<code>" + JSON.stringify(jwt_decode(idToken), null, 2) + "</code>"
+          document.getElementById("tokenDisplay").classList.remove("d-none");
+          document.getElementById("authnwidget").classList.add("d-none");
+        }
+      };
+      authnWidget.initRedirectless(config);
+    }
+    window.onload = load;
+            
+include includes/scripts.pug

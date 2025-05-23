@@ -1,0 +1,191 @@
+<head>
+  <title>Facile Consent Enforcement</title>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    ,
+    href="https://assets.pingone.com/ux/end-user/0.36.1/end-user.css"
+  />
+  <link rel="stylesheet" type="text/css" href="https://downloads.pingidentity.com/pf-authn-widget/latest/main-styles.css" />
+  <link rel="stylesheet" type="text/css" href="css/styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.51/dist/themes/light.css"
+  />
+  <link
+    href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="shortcut icon"
+    href="https://cdn.glitch.com/a766be66-dd8a-4fa9-adb0-382568f98cae%2FD0DE7B9A-1F4C-4DFF-9FFD-5A53A78AFA9E.png?v=1630464370995"
+  />
+  <body>
+    <div class="container mx-auto">
+      <div class="relative bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+          <div
+            class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10"
+          >
+            <div class="flex justify-start lg:w-0 lg:flex-1">
+              <a href="https://facile.pingidentity.cloud">
+                <span class="sr-only">Consent Enforcement</span>
+                <img
+                  id="topBarLogo"
+                  style="width:160px"
+                  src="https://cdn.glitch.com/a766be66-dd8a-4fa9-adb0-382568f98cae%2Ffacile_logo.png?v=1630520846655"
+                  alt="Project Facile Logo"
+                />
+              </a>
+            </div>
+            <div id="appTitleText">
+              Consent Enforcement Demo
+            </div>
+            <div
+              class="hidden md:flex items-center justify-end md:flex-1 lg:w-0"
+            >
+              <sl-button type="primary" id="signInBtn">
+                Sign On
+                <sl-icon slot="suffix" name="play"></sl-icon>
+              </sl-button>
+              <div class="grid grid-cols-3 gap-1">
+                <div>
+                  <sl-button
+                    id="myAcctBtn"
+                    href="/pf/idprofile.ping?LocalIdentityProfileID=regIdentityProfile"
+                    target="_blank"
+                  >
+                    My Profile
+                    <sl-icon slot="suffix" name="person-badge"></sl-icon>
+                  </sl-button>
+                </div>
+                <div>
+                  <sl-button
+                    type="neutral"
+                    id="signOffBtn"
+                    href="#"
+                  >
+                    Sign Off
+                    <sl-icon slot="suffix" name="x-lg"></sl-icon>
+                  </sl-button>
+                </div>
+                <div id="sessionExpired">
+                  <sl-tooltip content="Refresh PA Session">
+                    <sl-icon-button
+                      href="#"
+                      slot="suffix" 
+                      name="arrow-clockwise"
+                      label="Refresh PA Session"
+                    >
+                    </sl-icon-button>
+                  </sl-tooltip>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <sl-card class="card-footer" id="signInView">
+        <p>
+          Welcome to a demonstration of using PingAuthorize to enforce data
+          privacy. PingAuthorize is in control of the presented information 
+          based on the Marketing Preferences set in the <a href="/consent-mgmt" target="_blank">
+          Consent Management</a> app.
+        </p>
+        <br />
+        You are currently unauthenticated - used the Sign On button to logon.
+        <br /><br />
+        The Sign On button will contact PingAccess and receive an Authorization
+        object that is passed into the PingFederate AuthN API Widget.
+        PingFederate orchestrates the Authentication Experience via Policies,
+        and sends the AuthZ Code to PingAccess.
+        <br /><br />
+        PingAccess handles all the OIDC tokens and Application sessions - the
+        application has no code to deal with tokens or authentication, beyond
+        invoking the widget.
+
+        <div slot="footer">
+          <sl-button
+            slot="footer"
+            size="small"
+            href="https://glitch.com/edit/#!/facile-apps"
+            target="_blank"
+            >View Code</sl-button
+          >
+        </div>
+      </sl-card>
+
+      <div id="authnwidget"></div>
+      <div id="userAuthenticated">
+        <div id="userWelcome"></div>
+      </div>
+      <br />
+      <div id="userInfo" class="grid grid-rows-auto">
+        <div>
+          <sl-card class="card-header">
+            <div slot="header">
+              <sl-button id="refreshBtn" type="default" size="medium"
+                >Refresh
+                <sl-icon slot="prefix" name="arrow-repeat"></sl-icon>
+              </sl-button>
+            </div>
+            <table id="consentedUserInfo" class="table-auto"></table>
+          </sl-card>
+        </div>
+        <br />
+        <div>
+          <sl-drawer
+            label="PingAccess Session User"
+            class="drawer-custom-size"
+            style="--size: 50vw;"
+          >
+            <div id="userInfoDrawer">
+              User is not yet authenticated
+            </div>
+            <sl-button slot="footer" type="primary"
+              >Close
+              <sl-icon slot="suffix" name="x-lg"></sl-icon>
+            </sl-button>
+          </sl-drawer>
+          <sl-button type="success" size="small">User Info
+            <sl-icon slot="prefix" name="person-bounding-box"></sl-icon>
+            <sl-icon slot="suffix" name="arrow-right"></sl-icon>
+          </sl-button>
+        </div>
+      </div>
+      <br>
+      <sl-card class="card-header w-full border-dotted">
+        <div slot="header">
+          <sl-switch id="consoleLogSwitch">Show Console Logs</sl-switch>
+        </div>
+        <div id="consoleLog"></div>
+      </sl-card>
+    </div>
+
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.51/dist/shoelace.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://downloads.pingidentity.com/pf-authn-widget/latest/v2/pf.authn-widget.js"
+    ></script>
+<!--     <script
+      type="text/javascript"
+      src="/shared/scripts/fingerprint2-2.1.4.min.js"
+    ></script> -->
+    <script
+      type="text/javascript"
+      src="https://assets.pingone.com/signals/web-sdk/5.3.7/signals-sdk.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/shared/scripts/pingone-risk-profiling-signals-sdk.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/consent-enforce/scripts/client.js"
+    ></script>
+  </body>
+</head>

@@ -1,0 +1,95 @@
+html
+  head
+    title Project Utile
+    include includes/header.pug
+  body
+    include includes/topbar.pug
+    .pricing-header.px-3.py-3.pt-md-5.pb-md-4.mx-auto.text-center(id="headTitle")
+      h1(class="display-4") Manage your data conveniently
+      p(class="lead") The easiest way to manage data in your Ping Identity stack
+    .container
+      .row
+        .col
+          .card.border-secondary.shadow(id="healthCard")
+            .card-header.bg-secondary.text-white Health Info
+              .badge.rounded-pill.bg-success.float-end(id="productName" data-bs-toggle="collapse" href="#healthCollapse" role="button" aria-expanded="true" aria-controls="healthCollapse")
+            .collapse(id="healthCollapse")
+              .card-body
+                // Connection Info
+                .input-group
+                  label(for="connGauge" class="col-sm-2 col-form-label") Connections
+                  .progress.col-sm-10
+                    div(class="progress-bar" id="connGauge" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100")
+                // Gauge JVM Memory Usage (Percent) for JVM Memory Usage
+                .input-group
+                  label(for="memGauge" class="col-sm-2 col-form-label") Memory
+                  .progress.col-sm-10
+                    .progress-bar(id="memGauge" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100")
+                //Disk Space Usage
+                .input-group
+                  label(for="diskGauge" class="col-sm-2 col-form-label") Disk
+                  .progress.col-sm-10
+                    .progress-bar(id="diskGauge" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100")
+          p.
+          .alert.alert-warning.alert-dismissible.fade.d-none(role="alert" id="alertBlock")
+          .card.border-secondary.shadow(id="dataCard")
+            .card-header.bg-secondary.text-white Data
+              button(class="btn btn-success float-end btn-sm" id="addButton" data-bs-toggle="modal" data-bs-target="#exampleModal")
+                i(class="bi bi-folder-plus")  Add
+            .card-body
+              .input-group
+                label(for="baseDN" class="input-group-text") Base
+                input(type="text" class="form-control" id="baseDN" name="baseDN" )
+                label(for="searchScope" class="input-group-text") Depth
+                select(class="form-select" class="form-control" aria-label="Seach scope select" id="searchScope")
+                  option(value="baseObject") Base
+                  option(value="singleLevel") Single-Level
+                  option(value="wholeSubtree" selected) Whole Subtree
+                  option(value="subordinateSubtree") Subordinate entries
+              .input-group
+                label(for="searchFilter" class="input-group-text") Filter
+                input(type="text" class="form-control" placeholder='uid eq "user.0"' id="searchFilter" name="searchFilter" value='uid eq "user.0"')
+                button(class="btn btn-secondary form-control col-3" id="searchButton") Search
+              table(class="table" id="searchResultTable")
+          p.
+          .card.border-secondary.shadow.d-none(id="entryCard")
+            .card-header.bg-secondary.text-white Entry
+            .card-body
+              .input-group
+                label(for="entryDN" class="input-group-text") DN
+                input(type="text" class="form-control" id="entryDN" name="entryDN" readonly)
+                button(class="btn btn-primary" id="moveButton") 
+                  i(class="bi bi-folder-symlink") 
+              .input-group
+                textarea(class="form-control" id="entryJSON" rows=12)
+                button(class="btn btn-warning btn-sm" id="entryButton")
+                  i(class="bi bi-folder-check")  Update
+              .input-group(id="stateInputGroup")
+                textarea(class="form-control" id="entryState" rows=6)
+                button(class="btn btn-warning btn-sm" id="stateButton")
+                  i(class="bi bi-folder-check")  Update
+              .input-group
+                .btn-group.btn-group-sm.form-control(role="group" aria-label="Entry operations")
+                  button(class="btn btn-danger" id="deleteButton")
+                    i(class="bi bi-folder-minus")  Delete
+              .input-group
+                textarea(class="form-control" id="entryOperational" rows=10 readonly disabled)
+      .modal.fade(id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true")
+        .modal-dialog
+          .modal-content
+            .modal-header
+              h5(class="modal-title") New Entry
+              button(type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close")
+            .modal-body
+              .input-group
+                label(for="newEntryDN" class="input-group-text") DN
+                input(type="text" class="form-control" id="newEntryDN" name="newEntryDN")
+              .input-group
+                textarea(class="form-control" id="newEntryJSON" rows=12)
+            .modal-footer
+              button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") Close
+              button(type="button" class="btn btn-primary" id="newEntryButton") Create entry
+include includes/scripts.pug
+script(src="/utile/utile.js").
+script.
+  document.addEventListener("DOMContentLoaded", function(){init();});

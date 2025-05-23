@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    include includes/header.pug
+    title PingAccess Sample SPA
+
+  body
+    include includes/topbar.pug
+    .container
+      .card#weatherCard
+        .card-header#weatherCardHeader
+        .card-body#displayWeatherSummary
+          p.
+            The SPA makes a call to Openweather API every 60s that is also protected via PingAccess. Access to the API needs an
+            authentication session, and PingAccess is injecting an API Key into the call.
+          p.
+            Without a current session, access to the API will result in a HTTP 401 error that will cause the API request to be blocked.
+        #displayWeatherMain
+      p
+      .card#userInfo
+        .card-header#cardHeader
+          button.btn.btn-primary#btnLogin Login
+        .card-body#userDetails
+          p.
+            This is a simple SPA that uses PingAccess to simplify OIDC logon and presenting User Session information.
+          p.
+            The SPA contacts PingAccess which, in turn, communicates with PingFederate and manages the tokens and secrets
+            on behalf of the SPA.
+          p.
+            Changing User Data - either from Profile Management or Delegator can be reflected in the SPA with the <code>Refresh User Session</code> button.
+            <br><b>Note:</b> The refresh is performed by PingAccess every 30s.
+          p.
+            Session Validation with PingFederate is also enabled - if the PingFed session is no longer valid (use the Logoff link in Dashboard), then access to the SPA
+            resources will be revoked.
+          p.
+            The SPA code, and details on how PingAccess is configured are <a href="https://glitch.com/edit/#!/facile-apps?path=public/spa/pingaccess.md" target="_blank">here</a>
+        
+
+include includes/scripts.pug
+
+script(src="client.js")
+script.
+  $('#weatherCardHeader').html('Current Weather SPA')
+  console.log('registering listeners');
+  document.addEventListener("DOMContentLoaded", function(){
+    registerListeners();
+    console.log('listeners registered');
+    getUser()
+  });

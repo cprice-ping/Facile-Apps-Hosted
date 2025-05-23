@@ -1,0 +1,74 @@
+doctype html
+html
+  head
+    include includes/header.pug
+    title Consent API Demo
+
+  body
+  include includes/topbar.pug
+  
+  .container
+    .card
+      .card-header
+        #userHeader        
+      .card-body.bg-secondary
+        .row
+          .col
+            .card#displayConsentDef.d-none
+              .card-header.bg-warning#consentTitle
+              .card-body
+                b What are we collecting?
+                #consentData
+                p
+                b Why are we collecting it?
+                #consentPurpose
+                p
+                button#consentAcceptBtn.btn.btn-outline-success.btn-sm Agree
+                // Store the Def values
+                #consentDefId.d-none
+                #consentDefVersion.d-none
+                #consentDefLocale.d-none
+            .card#userConsentRecord.shadow.d-none
+              .card-header(style='background-color: pink')#displayConsentHeader Your Consent Records
+              .card-body#displayConsents
+          .col-sm-4.d-none#displayPrefsCard
+            .card.border-success.shadow
+              //.card-header Your Preferences
+              .card-body
+                h5.card-title How may we contact you?
+                #displayPrefs
+                .d-none#prefsRecordId
+    p
+    .card.d-none#displayRecordCard
+      .card-header(style='background-color: lightgreen')#displayConsentTitle
+      .card-body#displayConsentRecord
+    p
+    .card.d-none#displayRawCard
+      .card-header Raw Consent record
+      .card-body#displayRawRecord
+    p
+    .card#displayAppInfo
+      h5.card-header Facile Consent Demo
+      .card-body
+        h6.card-title Usage
+        p. 
+          This App is used to show using the PingDirectory ConsentAPI to manage a User's consent for a couple of events.<br>
+          After accepting the Terms and Conditions, you should see 2 Consent records displayed - one for the T&C, and another for User Preferences.
+        p.
+          T&C is coarse grained - only allowing a change to the <code>status</code>; Preferences is fine grained with the values for the Contact sliders stored in the record.
+        p.
+          Clicking on the Consent Record title will show the current contents of that record - you can see the calls being made in the Browser Web Developer tools
+        h6.card-title PingAccess integration
+        p.
+          The App uses PingAccess for Session and Token Manangement to remove the need for any secrets \ tokens to be held within the App itself. User details are
+          provided from a Virtual Resource with an Identity Map (<code>/user</code>), and the <code>access_token</code> from the session is injected as a Bearer to the proxied API call
+          (<code>/facile-apis/consent/</code> --> <code>{{pd}}/consent/</code>)
+        
+include includes/scripts.pug
+
+script(src="client.js")
+
+script.
+  registerListeners()
+  getUserInfo()
+  displayPrefs()

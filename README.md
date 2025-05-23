@@ -32,6 +32,19 @@ This project contains tools that are used with Project Facile
 
    This app is a PF Agentless integration that comes from PF and performs a call to Opswat to retrieve the local deviceId before returning to PF
 
+## Getting Started
+
+1. Copy `.env.example` to `.env` and fill in your environment variable values.
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the server:
+   ```
+   npm start
+   ```
+4. Open your browser to `http://localhost:3000` (or the port you configured).
+
 ## Contributors
 
 - Chris Price - cprice@pingidentity.com

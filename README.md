@@ -36,3 +36,22 @@ This project contains tools that are used with Project Facile
 
 - Chris Price - cprice@pingidentity.com
 - Arnaud Lacour - arno@pingidentity.com
+
+## Docker
+
+To build and run this application in a Docker container:
+
+```bash
+docker build -t facile-apps .
+docker run -d \
+  -p 3000:3000 \
+  -e PORT=3000 \
+  -e riskEnvId=<your_riskEnvId> \
+  -e riskClientId=<your_riskClientId> \
+  -e riskClientSecret=<your_riskClientSecret> \
+  -e skCompanyId=<your_skCompanyId> \
+  -e skApiKey=<your_skApiKey> \
+  -e pfAdapterUser=<your_pfAdapterUser> \
+  -e pfAdapterPwd=<your_pfAdapterPwd> \
+  facile-apps
+```

@@ -129,8 +129,9 @@ app.post("/getRiskDecision", (req, res) => {
 /************************************************************************************
                             SERVER SECTION
 *************************************************************************************/
-const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
+const port = process.env.PORT || 3000;
+const listener = app.listen(port, () => {
+  console.log(`Your app is listening on port ${listener.address().port}`);
 });
 
 function getPingOneToken(cb) {
